@@ -2,84 +2,120 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMYAZA TECH</title>
+    <title>SAMYAZA STREAM // Premium Media Player</title>
     <style>
-        body { margin:0; background:#020612; color:#00d4ff; font-family:monospace; padding:10px; }
+        body { margin:0; background:#020612; color:#00d4ff; font-family:monospace; overflow-x:hidden; padding:10px; }
         #space { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; pointer-events:none; }
-        #app { position:relative; z-index:2; max-width:400px; margin:0 auto; display:flex; flex-direction:column; gap:8px; }
-        .card { background:rgba(7,20,41,0.85); border:1px solid #132f54; padding:10px; border-radius:6px; text-align:center; }
-        .title { font-size:18px; font-weight:bold; color:#fff; text-shadow:0 0 5px #00d4ff; }
-        .time { font-size:24px; font-weight:bold; color:#fff; margin:4px 0; }
-        .btn-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:4px; margin-top:4px; }
-        button { background:#071a35; border:1px solid #00d4ff; color:#00d4ff; padding:6px 0; cursor:pointer; font-size:9px; font-weight:bold; }
-        button.active { background:#00d4ff; color:#000; }
-        .row { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; font-size:11px; color:#fff; }
-        input { background:#030d1e; border:1px solid #132f54; color:#fff; padding:4px; border-radius:4px; width:60px; text-align:center; }
-        input.w { width:120px; text-align:left; }
-        canvas#cpu { width:100%; height:40px; background:rgba(0,0,0,0.5); border:1px solid #132f54; display:block; margin-top:4px; }
-        .p-btn { background:linear-gradient(90deg,#00c6ff,#0072ff); border:none; color:#fff; padding:8px; width:100%; font-size:11px; font-weight:bold; cursor:pointer; }
-        #ftr { text-align:center; font-weight:bold; font-size:10px; color:#fff; text-shadow:0 0 5px #00d4ff; border-top:1px dashed rgba(0,212,255,0.2); padding-top:8px; margin-top:10px; }
+        #app { position:relative; z-index:2; max-width:420px; margin:0 auto; display:flex; flex-direction:column; gap:8px; }
+        .card { background:rgba(7,20,41,0.85); border:1px solid #132f54; padding:12px; border-radius:8px; text-align:center; box-shadow:0 4px 15px rgba(0,212,255,0.05); }
+        .title { font-size:18px; font-weight:bold; color:#fff; text-shadow:0 0(5px) #00d4ff; letter-spacing:2px; }
+        .media-lbl { font-size:10px; color:#88a0c0; text-transform:uppercase; margin-bottom:6px; text-align:left; font-weight:bold; border-bottom:1px solid #132f54; padding-bottom:3px; }
+        
+        /* Video Viewport Formats */
+        video { width:100%; height:180px; background:#000; border-radius:6px; border:1px solid #132f54; display:block; margin-bottom:8px; }
+        
+        /* Interactive Media Control Panels */
+        .controls { display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-top:5px; }
+        button { background:#071a36; border:1px solid #00d4ff; color:#00d4ff; padding:8px 0; cursor:pointer; font-size:10px; font-weight:bold; border-radius:4px; text-transform:uppercase; }
+        button:active { background:#00d4ff; color:#000; }
+        
+        /* Audio Player Custom Tracks */
+        .audio-track { display:flex; align-items:center; justify-content:space-between; background:#030d1e; padding:6px 10px; border-radius:4px; font-size:11px; color:#fff; margin-bottom:6px; border:1px solid #0e223b; }
+        
+        /* Highly Decorated Footer Anchor */
+        #ftr { text-align:center; font-weight:bold; font-size:11px; color:#fff; text-shadow:0 0 5px #00d4ff, 0 0 10px #00ffff; border-top:1px dashed rgba(0,212,255,0.2); padding-top:8px; margin-top:10px; letter-spacing:3px; }
     </style>
 </head>
 <body>
+
     <canvas id="space"></canvas>
+
     <div id="app">
-        <div class="card" id="auth">
-            <div class="title" style="font-size:14px;">SAMYAZA SECURITY</div>
-            <div class="row" style="margin-top:10px;"><span>EMAIL:</span><input type="email" id="em" class="w" value="seth@samyaza.tech"></div>
-            <div class="row" style="margin-bottom:10px;"><span>PASS:</span><input type="password" id="ps" class="w" value="********"></div>
-            <button class="p-btn" onclick="document.getElementById('auth').style.display='none';document.getElementById('main').style.display='flex';res();">LOGIN</button>
+        
+        <div class="card">
+            <div class="title">SAMYAZA STREAM</div>
+            <div style="font-size:9px; color:#88a0c0; margin-top:2px;">MULTIMEDIA SUITE MATRIX</div>
         </div>
-        <div id="main" style="display:none; flex-direction:column; gap:8px;">
-            <div class="card">
-                <div class="title">SAMYAZA TECH</div>
-                <div class="time" id="clock">00:00:00</div>
-                <div class="btn-grid"><button id="b1" class="active">LOCAL</button><button id="b2">LDN</button><button id="b3">NYC</button></div>
+
+        <!-- 📺 High Graphics Video Player Module -->
+        <div class="card">
+            <div class="media-lbl">📺 Automated HD Video Deck</div>
+            <!-- Uses an open-source high-quality test video loop -->
+            <video id="video-player" loop playsinline src="https://googleapis.com"></video>
+            <div class="controls">
+                <button onclick="document.getElementById('video-player').play()">▶ PLAY</button>
+                <button onclick="document.getElementById('video-player').pause()">⏸ PAUSE</button>
+                <button onclick="document.getElementById('video-player').muted = !document.getElementById('video-player').muted">🔇 MUTE</button>
             </div>
-            <div class="card">
-                <div class="row"><span>🌡️ TEMP:</span><span id="tmp" style="color:#00d4ff">--°C</span></div>
-                <div class="row"><span>💨 WIND:</span><span id="wnd" style="color:#00d4ff">-- km/h</span></div>
-            </div>
-            <div class="card" style="text-align:left;">
-                <div class="row"><span>RATE ($):</span><input type="number" id="rt" value="45"></div>
-                <div class="row"><span>HOURS:</span><input type="number" id="hr" value="8"></div>
-                <div class="row"><span>YIELD:</span><span id="rev" style="color:#00d4ff; font-weight:bold;">$360.00</span></div>
-                <div class="row" style="margin-top:5px; border-top:1px dashed #132f54; padding-top:5px;"><span>MPESA:</span><input type="tel" id="ph" class="w" value="254715182153"></div>
-                <button class="p-btn" onclick="alert('📲 M-Pesa STK push simulation sent to: +'+document.getElementById('ph').value)" style="margin-top:5px; background:linear-gradient(90deg,#1bd914,#0b7307)">🟢 LIPA NA MPESA (KES 50)</button>
-            </div>
-            <div class="card" style="text-align:left; font-size:9px; color:#64748b;">🧠 CPU WAVE:<canvas id="cpu"></canvas></div>
         </div>
+
+        <!-- 🎵 Synchronized Music Player Module -->
+        <div class="card">
+            <div class="media-lbl">🎵 Premium Audio Studio</div>
+            
+            <div class="audio-track">
+                <span>🎵 Cyberpunk Synthwave Beat</span>
+                <button onclick="playAudio('https://soundhelix.com', 'Synthwave')" style="padding:4px 8px; width:auto; font-size:9px;">▶ LOAD</button>
+            </div>
+            <div class="audio-track">
+                <span>🎵 Cosmic Lo-Fi Chill Pulse</span>
+                <button onclick="playAudio('https://soundhelix.com', 'Lo-Fi')" style="padding:4px 8px; width:auto; font-size:9px;">▶ LOAD</button>
+            </div>
+
+            <div style="font-size:10px; color:#fff; margin:8px 0; text-align:left;">
+                NOW PLAYING: <span id="audio-status" style="color:#00d4ff; font-weight:bold;">NONE</span>
+            </div>
+            
+            <div class="controls">
+                <button onclick="globalAudio.play()">▶ PLAY</button>
+                <button onclick="globalAudio.pause()">⏸ PAUSE</button>
+                <button onclick="globalAudio.volume = Math.max(0, globalAudio.volume - 0.2)">🔉 VOL-</button>
+            </div>
+        </div>
+
+        <!-- Decorated Brand Floor -->
         <div id="ftr">⚡ DEVELOPED BY SETH ⚡</div>
     </div>
+
     <script>
-        let zn = 'L'; const z = { L: null, E: 'Europe/London', A: 'America/New_York' }, b = { L: 'b1', E: 'b2', A: 'b3' };
-        Object.keys(z).forEach(k => document.getElementById(b[k]).onclick = function() { Object.values(b).forEach(id => document.getElementById(id).classList.remove('active')); this.classList.add('active'); zn = k; });
-        setInterval(() => { const d = new Date(), c = z[zn] ? { timeZone: z[zn], hour12: false } : {}; document.getElementById('clock').innerText = d.toLocaleTimeString('en-US', c); }, 1000);
-        const calc = () => { const r = parseFloat(document.getElementById('rt').value)||0, h = parseFloat(document.getElementById('hr').value)||0; document.getElementById('rev').innerText = `$${(r*h).toFixed(2)}`; };
-        document.getElementById('rt').oninput = calc; document.getElementById('hr').oninput = calc;
-        async function getW(lt, ln) {
-            try { const r = await fetch(`https://open-meteo.com{lt}&longitude=${ln}&current_weather=true`), o = await r.json(); document.getElementById('tmp').innerText = o.current_weather.temperature+"°C"; document.getElementById('wnd').innerText = o.current_weather.windspeed+" km/h"; } catch(e) { }
+        // 1. Audio Engine Routing Initialization
+        let globalAudio = new Audio();
+        function playAudio(url, trackName) {
+            globalAudio.src = url;
+            globalAudio.play();
+            document.getElementById('audio-status').innerText = trackName.toUpperCase() + " ACTIVE";
         }
-        navigator.geolocation.getCurrentPosition(p => getW(p.coords.latitude, p.coords.longitude), () => getW(-1.286, 36.817));
-        const cv = document.getElementById('space'), c = cv.getContext('2d'), cc = document.getElementById('cpu'), cx = cc.getContext('2d'), ch = Array(50).fill(0); let lt = performance.now();
-        const res = () => { cv.width = window.innerWidth; cv.height = window.innerHeight; if(cc.clientWidth > 0) { cc.width = cc.clientWidth; cc.height = cc.clientHeight; } };
+
+        // 2. Sky-Blue Connected Network Space Nodes Matrix Engine
+        const cv = document.getElementById('space'), c = cv.getContext('2d');
+        const res = () => { cv.width = window.innerWidth; cv.height = window.innerHeight; };
         window.onresize = res; res();
-        const pts = Array(20).fill(0).map(() => ({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, vx: (Math.random()-0.5)*0.8, vy: (Math.random()-0.5)*0.8 }));
+
+        const networkNodes = Array(22).fill(0).map(() => ({ 
+            x: Math.random()*window.innerWidth, 
+            y: Math.random()*window.innerHeight, 
+            vx: (Math.random()-0.5)*0.8, 
+            vy: (Math.random()-0.5)*0.8 
+        }));
+
         function step() {
             c.fillStyle = "#020612"; c.fillRect(0, 0, cv.width, cv.height);
-            pts.forEach((p, i) => {
-                p.x += p.vx; p.y += p.vy; if(p.x < 0 || p.x > cv.width) p.vx *= -1; if(p.y < 0 || p.y > cv.height) p.vy *= -1;
-                c.fillStyle = "rgba(0,212,255,0.4)"; c.beginPath(); c.arc(p.x, p.y, 2, 0, Math.PI*2); c.fill();
-                for (let j = i + 1; j < pts.length; j++) {
-                    const d = Math.hypot(p.x - pts[j].x, p.y - pts[j].y);
-                    if (d < 130) { c.strokeStyle = `rgba(0,212,255,${1 - d/130})`; c.lineWidth = 0.5; c.beginPath(); c.moveTo(p.x, p.y); c.lineTo(pts[j].x, pts[j].y); c.stroke(); }
+            networkNodes.forEach((n, i) => {
+                n.x += n.vx; n.y += n.vy;
+                if(n.x < 0 || n.x > cv.width) n.vx *= -1; 
+                if(n.y < 0 || n.y > cv.height) n.vy *= -1;
+                
+                c.fillStyle = "rgba(0, 212, 255, 0.4)"; c.beginPath(); c.arc(n.x, n.y, 2, 0, Math.PI*2); c.fill();
+                
+                for (let j = i + 1; j < networkNodes.length; j++) {
+                    const d = Math.hypot(n.x - networkNodes[j].x, n.y - networkNodes[j].y);
+                    if (d < 130) { 
+                        c.strokeStyle = `rgba(0, 212, 255, ${1 - d/130})`; 
+                        c.lineWidth = 0.5; 
+                        c.beginPath(); c.moveTo(n.x, n.y); c.lineTo(networkNodes[j].x, networkNodes[j].y); c.stroke(); 
+                    }
                 }
             });
-            const now = performance.now(), del = now - lt; lt = now; ch.push(Math.min(cc.height, Math.max(0, (del - 16.6) * 5))); ch.shift();
-            if(cc.width > 0) {
-                cx.clearRect(0, 0, cc.width, cc.height); cx.strokeStyle = "#00d4ff"; cx.lineWidth = 1.5; cx.beginPath();
-                ch.forEach((v, i) => { const x = i * (cc.width/49), y = cc.height - v - 10 + Math.sin(i*0.3+now*0.008)*2; if(i === 0) cx.moveTo(x, y); else cx.lineTo(x, y); }); cx.stroke();
-            }
             requestAnimationFrame(step);
         }
         step();
