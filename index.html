@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMYAZA TECH // Premium Tool</title>
+    <style>
+        :root { --sky: #00d4ff; --bg: #030a16; --panel: rgba(7, 24, 46, 0.85); --border: #123456; }
+        body, html { margin:0; padding:0; width:100%; height:100%; background:var(--bg); color:var(--sky); font-family: monospace; overflow-x:hidden; }
+        #space-canvas { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; pointer-events:none; }
+        #dashboard { position:relative; z-index:2; max-width: 460px; margin: 0 auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; min-height: 100vh; }
+        .panel { background:var(--panel); border:1px solid var(--border); padding:12px; border-radius:6px; text-align:center; box-shadow:0 4px 15px rgba(0,212,255,0.05); }
+        .title { font-size:20px; font-weight:bold; color:#fff; text-shadow:0 0 8px var(--sky); letter-spacing:2px; }
+        .time-box { font-size:26px; font-weight:bold; color:#fff; margin:5px 0; text-shadow:0 0 10px var(--sky); }
+        .btn-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-top:6px; }
+        button { background:#071c36; border:1px solid var(--sky); color:var(--sky); padding:8px 2px; cursor:pointer; font-size:10px; font-weight:bold; font-family:monospace; border-radius:4px; }
+        button.active, button:hover { background:var(--sky); color:#000; font-weight: bold; }
+        .flex-row { display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px; font-size: 12px; color:#fff; }
+        input { background: #030a16; border: 1px solid var(--border); color: #fff; padding: 4px; border-radius: 4px; width: 60px; font-family: monospace; text-align: center; }
+        canvas#cpu-canvas { width:100%; height:50px; background:rgba(0,0,0,0.5); border:1px solid #123456; display:block; margin-top:6px; border-radius:4px; }
+        .premium-btn { background: linear-gradient(90deg, #ff0055, #7928ca); border: none; color: white; padding: 10px; width: 100%; font-size: 11px; font-weight:bold; margin-top: 6px; border-radius: 4px; cursor:pointer; }
+        #fancy-footer { text-align:center; font-weight:bold; font-size:11px; color:#fff; letter-spacing:3px; text-shadow:0 0 5px var(--sky), 0 0 10px #00ffff; border-top:1px dashed rgba(0,212,255,0.3); padding:10px 0; margin-top:auto; }
+    </style>
+</head>
+<body>
+
+    <canvas id="space-canvas"></canvas>
+
+    <div id="dashboard">
+        <div class="panel">
+            <div class="title">SAMYAZA TECH</div>
+            <div style="font-size:9px; color:#88a0c0;">ENTERPRISE ANALYTICS NODE</div>
+            <div class="time-box" id="time-display">00:00:00</div>
+            <div id="zone-label" style="font-size:9px; color:#88a0c0;">LOCAL TIME ZONE MONITOR</div>
+            <div class="btn-grid">
+                <button id="b-loc" class="active">📍 LOCAL</button>
+                <button id="b-ldn">🇪🇺 LONDON</button>
+                <button id="b-nyc">🇺🇸 NEW YORK</button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="flex-row"><span>🌡️ TEMP:</span><span id="temp-val" style="color:var(--sky)">--°C</span></div>
+            <div class="flex-row"><span>💨 WIND:</span><span id="wind-val" style="color:var(--sky)">-- km/h</span></div>
+        </div>
+
+        <div class="panel" style="text-align:left;">
+            <div style="font-size:10px; color:#88a0c0; border-bottom:1px solid var(--border); padding-bottom:4px; margin-bottom:6px;">💰 FREELANCE SUBSCRIPTION SAAS MODULE</div>
+            <div class="flex-row"><span>HOURLY RATE ($):</span><input type="number" id="h-rate" value="45"></div>
+            <div class="flex-row"><span>HOURS LOGGED:</span><input type="number" id="h-logged" value="8"></div>
+            <div class="flex-row" style="margin-top:5px; padding-top:4px; border-top:1px dashed var(--border)"><span>ESTIMATED YIELD:</span><span id="revenue" style="color:var(--sky); font-weight:bold;">$360.00</span></div>
+            <button class="premium-btn" onclick="alert('Monetization active: Premium options unlocked via Samyaza Subscriptions.')">🚀 ACTIVATE PREMIUM FEATURES</button>
+        </div>
+
+        <div class="panel" style="text-align:left; font-size:10px; color:#88a0c0;">
+            🧠 REAL-TIME PROCESSOR WAVE WORKLOAD:
+            <canvas id="cpu-canvas"></canvas>
+        </div>
+
+        <div id="fancy-footer">
+            ⚡ <span>DEVELOPED BY SETH</span> ⚡
+        </div>
+    </div>
+
+    <script>
+        // 1. Clocks Automation
+        let zone = 'LOCAL';
+        const zones = { 'LOCAL': null, 'LONDON': 'Europe/London', 'NEW YORK': 'America/New_York' }, btns = { 'LOCAL': 'b-loc', 'LONDON': 'b-ldn', 'NEW YORK': 'b-nyc' };
+        Object.keys(zones).forEach(z => {
+            document.getElementById(btns[z]).onclick = function() {
+                Object.values(btns).forEach(id => document.getElementById(id).classList.remove('active'));
+                this.classList.add('active'); zone = z;
+                document.getElementById('zone-label').innerText = `${z} TIME ZONE MONITOR`;
+            };
+        });
+        setInterval(() => {
+            const d = new Date(), cfg = zones[zone] ? { timeZone: zones[zone], hour12: false } : {};
+            document.getElementById('time-display').innerText = d.toLocaleTimeString('en-US', cfg);
+        }, 1000);
+
+        // 2. Earnings Computation Formula
+        const calc = () => {
+            const r = parseFloat(document.getElementById('h-rate').value)||0, h = parseFloat(document.getElementById('h-logged').value)||0;
+            document.getElementById('revenue').innerText = `$${(r*h).toFixed(2)}`;
+        };
+        document.getElementById('h-rate').oninput = calc; document.getElementById('h-logged').oninput = calc;
+
+        // 3. Environment Meteo API Client
+        async function getMeteo(lt, ln) {
+            try {
+                const res = await fetch(`https://open-meteo.com{lt}&longitude=${ln}&current_weather=true`);
+                const out = await res.json();
+                document.getElementById('temp-val').innerText = `${out.current_weather.temperature}°C`;
+                document.getElementById('wind-val').innerText = `${out.current_weather.windspeed} km/h`;
+            } catch(e) { document.getElementById('temp-val').innerText = "CONN_ERR"; }
+        }
+        navigator.geolocation.getCurrentPosition(p => getMeteo(p.coords.latitude, p.coords.longitude), () => getMeteo(-1.286, 36.817));
+
+        // 4. Sky-Blue Space Node Grid & CPU Pipeline
+        const cv = document.getElementById('space-canvas'), c = cv.getContext('2d');
+        const cpuCv = document.getElementById('cpu-canvas'), cpuC = cpuCv.getContext('2d'), cpuH = Array(60).fill(0);
+        let lastT = performance.now();
+        const res = () => { cv.width = window.innerWidth; cv.height = window.innerHeight; cpuCv.width = cpuCv.clientWidth; cpuCv.height = cpuCv.clientHeight; };
+        window.onresize = res; res();
+
+        const networkNodes = Array(28).fill(0).map(() => ({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, vx: (Math.random()-0.5)*1, vy: (Math.random()-0.5)*1 }));
+
+        function step() {
+            c.fillStyle = "#030a16"; c.fillRect(0, 0, cv.width, cv.height);
+            networkNodes.forEach((n, i) => {
+                n.x += n.vx; n.y += n.vy;
+                if(n.x < 0 || n.x > cv.width) n.vx *= -1; if(n.y < 0 || n.y > cv.height) n.vy *= -1;
+                c.fillStyle = "rgba(0, 212, 255, 0.4)"; c.beginPath(); c.arc(n.x, n.y, 2, 0, Math.PI*2); c.fill();
+                for (let j = i + 1; j < networkNodes.length; j++) {
+                    const d = Math.hypot(n.x - networkNodes[j].x, n.y - networkNodes[j].y);
+                    if (d < 120) {
+                        c.strokeStyle = `rgba(0, 212, 255, ${1 - d/120})`; c.lineWidth = 0.6;
+                        c.beginPath(); c.moveTo(n.x, n.y); c.lineTo(networkNodes[j].x, networkNodes[j].y); c.stroke();
+                    }
+                }
+            });
+
+            const now = performance.now(), delay = now - lastT; lastT = now;
+            cpuH.push(Math.min(cpuCv.height, Math.max(0, (delay - 16.6) * 5))); cpuH.shift();
+            cpuC.clearRect(0, 0, cpuCv.width, cpuCv.height); cpuC.strokeStyle = "#00d4ff"; cpuC.lineWidth = 1.5; cpuC.beginPath();
+            const slc = cpuCv.width / (cpuH.length - 1);
+            cpuH.forEach((v, idx) => {
+                const x = idx * slc, y = cpuCv.height - v - 10 + Math.sin(idx * 0.3 + now * 0.008) * 3;
+                if(idx === 0) cpuC.moveTo(x, y); else cpuC.lineTo(x, y);
+            });
+            cpuC.stroke();
+            requestAnimationFrame(step);
+        }
+        step();
+    </script>
+</body>
+</html>
