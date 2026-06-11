@@ -1,129 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMYAZA CORE // Task Automation Workspace</title>
+    <meta charset="UTF-8">
+    <title>Samyaza & Akoth | Our Friendship</title>
+    <!-- Importing a fancy font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <style>
-        :root { --sky: #00d4ff; --border: #132f54; --card-bg: rgba(7, 20, 41, 0.85); }
-        body { margin:0; background:#020612; color:var(--sky); font-family:monospace; overflow-x:hidden; padding:10px; }
-        #space { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; pointer-events:none; }
-        #app { position:relative; z-index:2; max-width:420px; margin:0 auto; display:flex; flex-direction:column; gap:10px; }
-        .card { background:var(--card-bg); border:1px solid var(--border); padding:12px; border-radius:8px; text-align:center; box-shadow:0 4px 15px rgba(0,212,255,0.05); }
-        .title { font-size:18px; font-weight:bold; color:#fff; text-shadow:0 0 5px var(--sky); letter-spacing:2px; }
-        .lbl { font-size:10px; color:#88a0c0; text-transform:uppercase; margin-bottom:8px; text-align:left; font-weight:bold; border-bottom:1px solid var(--border); padding-bottom:3px; }
-        
-        /* Input & Controls Group styling */
-        .input-group { display:flex; gap:6px; margin-bottom:10px; }
-        input { flex-grow:1; background:#030d1e; border:1px solid var(--border); color:#fff; padding:8px; border-radius:4px; font-family:monospace; font-size:12px; }
-        input:focus { border-color:var(--sky); outline:none; }
-        
-        button { background:#071a36; border:1px solid var(--sky); color:var(--sky); padding:8px 12px; cursor:pointer; font-size:11px; font-weight:bold; border-radius:4px; text-transform:uppercase; }
-        button:active { background:var(--sky); color:#000; }
-        
-        /* Interactive List Stream Layout */
-        #task-list { text-align:left; max-height:180px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; }
-        .task-item { display:flex; justify-content:space-between; align-items:center; background:rgba(3,13,30,0.6); padding:8px 10px; border-radius:4px; border:1px solid #0e223b; font-size:12px; color:#fff; }
-        .task-item.done { border-color:#00ff66; opacity:0.6; }
-        .task-item.done span { text-decoration:line-through; color:#00ff66; }
-        
-        /* Monetizable Lipa Na M-Pesa Hook */
-        .pay-banner { background:linear-gradient(90deg, #1bd914, #0b7307); border:none; color:white; padding:12px; width:100%; font-size:12px; font-weight:bold; border-radius:4px; cursor:pointer; margin-top:5px; box-shadow:0 4px 10px rgba(27,217,20,0.3); }
-        
-        #ftr { text-align:center; font-weight:bold; font-size:11px; color:#fff; text-shadow:0 0 5px var(--sky), 0 0 10px #00ffff; border-top:1px dashed rgba(0,212,255,0.2); padding-top:8px; margin-top:10px; letter-spacing:3px; }
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            background: #050505;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Twinkling Stars Background */
+        #starfield { position: fixed; top: 0; left: 0; z-index: -1; }
+
+        .container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; text-align: center;
+        }
+
+        h1 { 
+            font-family: 'Cinzel', serif; 
+            font-size: 3.5rem; 
+            color: #ffd700; /* Gold */
+            text-shadow: 0 0 20px #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .names { font-size: 2rem; letter-spacing: 5px; margin-bottom: 20px; }
+
+        .timer { display: flex; gap: 30px; margin-top: 20px; }
+        .unit { font-size: 1.5rem; }
+        .label { font-size: 0.7rem; display: block; opacity: 0.7; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-    <canvas id="space"></canvas>
+    <canvas id="starfield"></canvas>
 
-    <div id="app">
-        
-        <div class="card">
-            <div class="title">SAMYAZA CORE</div>
-            <div style="font-size:9px; color:#88a0c0; margin-top:2px;">AUTOMATED TASK MANAGER</div>
+    <div class="container">
+        <h1>Our Friendship</h1>
+        <div class="names">Samyaza & Akoth</div>
+        <p>Awaiting our first meeting on August 1st, 2026</p>
+
+        <div class="timer">
+            <div class="unit"><span id="days">00</span><span class="label">Days</span></div>
+            <div class="unit"><span id="hours">00</span><span class="label">Hrs</span></div>
+            <div class="unit"><span id="minutes">00</span><span class="label">Min</span></div>
+            <div class="unit"><span id="seconds">00</span><span class="label">Sec</span></div>
         </div>
-
-        <!-- 📝 Interactive Project Management Dashboard -->
-        <div class="card">
-            <div class="lbl">📝 WORKSPACE COMPONENT OPERATIONS</div>
-            <div class="input-group">
-                <input type="text" id="task-input" placeholder="Type new pipeline task action...">
-                <button onclick="addTask()">ADD</button>
-            </div>
-            <div id="task-list">
-                <div class="task-item"><span>🚀 Initialize Samyaza node engine</span><button onclick="toggleTask(this)" style="padding:4px 6px; font-size:9px;">✔</button></div>
-                <div class="task-item"><span>📡 Connect sky-blue space web array</span><button onclick="toggleTask(this)" style="padding:4px 6px; font-size:9px;">✔</button></div>
-            </div>
-        </div>
-
-        <!-- 🔒 Monetizable Feature Lock -->
-        <div class="card">
-            <div class="lbl">🔒 AUTOMATED PAYWALL STANDBY</div>
-            <div style="font-size:12px; color:#fff; text-align:left; margin-bottom:8px; line-height:1.4;">
-                Upgrade to the Premium Workspace to unlock unlimited tracking logs and link automated email alerts directly to account: <span style="color:var(--sky); font-weight:bold;">0715182153</span>.
-            </div>
-            <button class="pay-banner" onclick="alert('📲 M-Pesa STK prompt simulation initiated for target account payload link.')">🟢 UNLOCK WORKSPACE (KES 50)</button>
-        </div>
-
-        <!-- Creator Tag Footer Anchor -->
-        <div id="ftr">⚡ DEVELOPED BY SETH ⚡</div>
     </div>
 
     <script>
-        // 1. Task Array Processing Actions
-        function addTask() {
-            const input = document.getElementById('task-input');
-            const val = input.value.trim();
-            if (!val) return;
-            
-            const list = document.getElementById('task-list');
-            const item = document.createElement('div');
-            item.className = 'task-item';
-            item.innerHTML = `<span>🚀 ${val}</span><button onclick="toggleTask(this)" style="padding:4px 6px; font-size:9px;">✔</button>`;
-            
-            list.appendChild(item);
-            input.value = '';
-            list.scrollTop = list.scrollHeight;
-        }
+        // Starfield Logic
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
 
-        function toggleTask(btn) {
-            const item = btn.parentElement;
-            item.classList.toggle('done');
-        }
-
-        // 2. Responsive Sky-Blue Connected Node Graphics Matrix
-        const cv = document.getElementById('space'), c = cv.getContext('2d');
-        const res = () => { cv.width = window.innerWidth; cv.height = window.innerHeight; };
-        window.onresize = res; res();
-
-        const networkNodes = Array(22).fill(0).map(() => ({ 
-            x: Math.random()*window.innerWidth, 
-            y: Math.random()*window.innerHeight, 
-            vx: (Math.random()-0.5)*0.7, 
-            vy: (Math.random()-0.5)*0.7 
+        const stars = Array.from({length: 150}, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2,
+            opacity: Math.random()
         }));
 
-        function step() {
-            c.fillStyle = "#020612"; c.fillRect(0, 0, cv.width, cv.height);
-            networkNodes.forEach((n, i) => {
-                n.x += n.vx; n.y += n.vy;
-                if(n.x < 0 || n.x > cv.width) n.vx *= -1; 
-                if(n.y < 0 || n.y > cv.height) n.vy *= -1;
-                
-                c.fillStyle = "rgba(0, 212, 255, 0.4)"; c.beginPath(); c.arc(n.x, n.y, 2, 0, Math.PI*2); c.fill();
-                
-                for (let j = i + 1; j < networkNodes.length; j++) {
-                    const d = Math.hypot(n.x - networkNodes[j].x, n.y - networkNodes[j].y);
-                    if (d < 130) { 
-                        c.strokeStyle = `rgba(0, 212, 255, ${1 - d/130})`; 
-                        c.lineWidth = 0.5; 
-                        c.beginPath(); c.moveTo(n.x, n.y); c.lineTo(networkNodes[j].x, networkNodes[j].y); c.stroke(); 
-                    }
-                }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(Math.sin(Date.now() * 0.002 + s.opacity))})`;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
             });
-            requestAnimationFrame(step);
+            requestAnimationFrame(draw);
         }
-        step();
+        draw();
+
+        // Timer Logic
+        const target = new Date("August 1, 2026 00:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = target - now;
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        }, 1000);
     </script>
 </body>
 </html>
